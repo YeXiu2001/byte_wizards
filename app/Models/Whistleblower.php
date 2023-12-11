@@ -9,9 +9,10 @@ class Whistleblower extends Model
 {
     use HasFactory;
     protected $table = 'whistleblowerreps';
-    protected $fillable = ['fname', 'lname', 'contactno', 'email', 'name_accused', 'position', 'department', 'misconduct', 'persons_involved', 'date_of_incident', 'further_infos'];
+    protected $fillable = ['fname', 'lname', 'contactno', 'email', 'name_accused', 'position', 'department', 'misconduct', 'persons_involved', 'date_of_incident', 'further_infos', 'status'];
     public $timestamps = true;
     protected $attributes = [
         'email' => 'N/A',
+        'status' => 'pending'
     ];
 }

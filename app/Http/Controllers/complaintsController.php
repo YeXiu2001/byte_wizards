@@ -30,6 +30,7 @@ class complaintsController extends Controller
             'offense' => 'required|string',
             'narration' => 'required|string',
             'date_of_incident' => 'required|date',
+            'status' => 'nullable|string'
         ]);
          // Get the currently authenticated user
          $user = Auth::user();
@@ -39,7 +40,7 @@ class complaintsController extends Controller
         $complaints->reportedby = $user->id;
         
         $complaints->fill($request->only([
-            'c_fname', 'c_lname', 'c_contactno', 'c_email', 'c_name_accused', 'c_position', 'c_department', 'offense', 'narration', 'date_of_incident'
+            'c_fname', 'c_lname', 'c_contactno', 'c_email', 'c_name_accused', 'c_position', 'c_department', 'offense', 'narration', 'date_of_incident', 'status'
         ]));
         $complaints->save();
 

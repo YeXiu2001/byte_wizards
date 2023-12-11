@@ -12,7 +12,7 @@ class complaintsViewController extends Controller
         $user = Auth::user();
 
         // Fetch the user's complaints with pagination
-        $complaints = $user->complaints()->paginate(1000); // Adjust the pagination size as needed
+        $complaints = $user->complaints()->orderBy('id', 'desc')->paginate(1000); // Adjust the pagination size as needed
 
         // Pass the complaints data to the view
         return view('complaintsView', ['complaints' => $complaints]);

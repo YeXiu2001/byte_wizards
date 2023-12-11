@@ -4,13 +4,15 @@
 @extends('navbar')
 <!-- bs-stepper css -->
 <link rel="stylesheet" href="{{  asset('css/bs-stepper.css') }}">
+<!-- Include SweetAlert2 from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- bs-stepper js -->
 <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <div class="container py-5">
-<div class="card border-danger">
+<div class="card border-primary">
 <div class="card-body">
     <div class="mb-5 p-1 bg-white">
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -41,7 +43,7 @@
                 </div>
             </div>
             <div class="bs-stepper-content">
-            <form class="needs-validation" onSubmit="return false" novalidate  method="POST" action="{{ route('complaints.post') }} ">
+            <form class="needs-validation" onSubmit="return false" novalidate  method="POST" action="{{ route('complaints.post') }}">
                 @csrf
                     <div id="test-l-1" role="tabpanel" class="bs-stepper-pane" aria-labelledby="stepper1trigger1">
                         <div class="form-check">
@@ -185,8 +187,31 @@ function validateAndSubmit() {
         dateIncident.value.trim() !== '' &&
         furtherInfos.value.trim() !== ''
     ) {
-        // Proceed to submission if all checks pass
-        form.submit();
+         // Show SweetAlert2 confirmation
+         Swal.fire({
+            title: 'Warning!',
+            text: 'Are you sure you want to submit this complaint? This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, submit it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If the user confirms, submit the form
+                form.submit();
+                 // Show success Swal after form submission with a delay of 1500 milliseconds (1.5 seconds)
+                 Swal.fire({
+                    title: 'Success!',
+                    text: 'Complaint report submitted successfully.',
+                    icon: 'success',
+                    position: 'bottom-end', // Set position to lower right
+                    timer: 2300, // Adjust the duration (in milliseconds)
+                    timerProgressBar: true, // Display a progress bar
+                    showConfirmButton: false, // Hide the "OK" button
+                });
+            }
+        });
     } else {
         // Show validation feedback for the empty fields
         form.classList.add('was-validated');

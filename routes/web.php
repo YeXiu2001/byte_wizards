@@ -10,6 +10,7 @@ use App\Http\Controllers\complaintsViewController;
 use App\Http\Controllers\userfeedbackViewController;
 use App\Http\Controllers\whistleblowerViewController;
 use App\Http\Controllers\ecomController;
+use App\Http\Controllers\iAuditController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,4 +62,17 @@ Route::middleware(['auth', 'member'])->group(function () {
 Route::middleware(['auth', 'ethics_com'])->group(function () {
     // Routes for ethics_com
     Route::get('/ethicscom', [ecomController::class, 'ecomHome'])->name('ethicsCom.home');
+
+    Route::get('/analyticsEC', [ecomController::class, 'ecomAnalytics'])->name('ethicsCom.analytics');
+});
+Route::middleware(['auth', 'internal_audit'])->group(function () {
+
+    Route::get('/complaintsIA', [iAuditController::class, 'iauditcomplaints'])->name('complaintsIA.home');
+    Route::get('/whistleblowerIA', [iAuditController::class, 'iauditwblower'])->name('wblowerIA.home');
+
+    Route::delete('/complaints/delete/{id}', [iAuditController::class, 'deleteComplaint'])->name('deleteComplaint');
+    Route::patch('/complaints/update-status/{id}', [iAuditController::class, 'updateComplaintStatus'])->name('updateComplaintStatus');
+
+    Route::delete('/whistleblowerreps/delete/{id}', [iAuditController::class, 'deleteWblower'])->name('deleteWblower');
+    Route::patch('/whistleblowerreps/update-status/{id}', [iAuditController::class, 'updateWblowerStatus'])->name('updateWblowerStatus');
 });

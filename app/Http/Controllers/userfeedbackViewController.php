@@ -14,7 +14,7 @@ class userfeedbackViewController extends Controller
         $user = Auth::user();
 
         // Fetch the user's complaints with pagination
-        $userfeedback = $user->userfeedbacks()->paginate(1000); // Adjust the pagination size as needed
+        $userfeedback = $user->userfeedbacks()->orderBy('id', 'desc')->paginate(1000); // Adjust the pagination size as needed
 
         // Pass the complaints data to the view
         return view('userfeedbackView', ['userfeedbacks' => $userfeedback]);

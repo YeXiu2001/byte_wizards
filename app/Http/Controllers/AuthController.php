@@ -40,9 +40,11 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user(); // Get the authenticated user
             if ($user->role === 'member') {
-                return redirect('/home')->with('success', 'Logged in successfully.');
+                return redirect()->route('userfeedback.home')->with('success', 'Logged in successfully.');
             } elseif ($user->role === 'ethics_com') {
                 return redirect()->route('ethicsCom.home')->with('success', 'Logged in successfully.');
+            }elseif ($user->role === 'internal_audit') {
+                return redirect()->route('complaintsIA.home')->with('success', 'Logged in successfully.');
             } else {
                 Auth::logout(); 
                 return back()->with('error', 'You do not have permission to access this page.');

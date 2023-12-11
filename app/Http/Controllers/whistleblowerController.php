@@ -30,6 +30,7 @@ class whistleblowerController extends Controller
             'persons_involved' => 'required|string',
             'date_of_incident' => 'required|date',
             'further_infos' => 'required|string',
+            'status'=> 'nullable|string',
         ]);
         // Get the currently authenticated user
         $user = Auth::user();
@@ -41,7 +42,7 @@ class whistleblowerController extends Controller
         
        // Fill the model with the validated data
         $wblower->fill($request->only([
-            'fname', 'lname', 'contactno', 'email', 'name_accused', 'position', 'department', 'misconduct', 'persons_involved', 'date_of_incident', 'further_infos'
+            'fname', 'lname', 'contactno', 'email', 'name_accused', 'position', 'department', 'misconduct', 'persons_involved', 'date_of_incident', 'further_infos', 'status'
         ]));
 
         $wblower->save();

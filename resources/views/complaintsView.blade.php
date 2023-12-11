@@ -22,10 +22,9 @@
                 <tr>
                     <th>Date of Incident</th>
                     <th>Reported Personnel/s</th>
-                    <th>Position</th>
-                    <th>Department</th>
                     <th>Committed Offense</th>
                     <th>Narration of Incident</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,10 +33,9 @@
                         <!-- <td>{{ $complaint->id }}</td> -->
                         <td>{{ $complaint->date_of_incident }}</td>
                         <td>{{ $complaint->c_name_accused }}</td>
-                        <td>{{ $complaint->c_position }}</td>
-                        <td>{{ $complaint->c_department }}</td>
                         <td>{{ $complaint->offense }}</td>
                         <td>{{ $complaint->narration }}</td>
+                        <td>{{ $complaint->status }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -50,7 +48,8 @@
 <script>
 $(document).ready(function () {
     $('#myTable').DataTable({
-        responsive: true // Enable responsive extension
+        responsive: true, // Enable responsive extension
+        order: []
     });
 });
 </script>

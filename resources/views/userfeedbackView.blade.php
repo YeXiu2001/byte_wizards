@@ -21,7 +21,7 @@
                 <tr>
                     <th>Date</th>
                     <th>Rating</th>
-                    <th>Issues</th>
+                    <th>Reactions</th>
                     <th>Suggestions</th>
                 </tr>
             </thead>
@@ -44,7 +44,8 @@
 <script>
 $(document).ready(function () {
     $('#myTable').DataTable({
-        responsive: true // Enable responsive extension
+        responsive: true, // Enable responsive extension
+        order: [] // Turn off initial sorting
     });
 });
 </script>

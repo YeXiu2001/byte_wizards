@@ -71,6 +71,7 @@ class Kernel extends HttpKernel
         // ...
         'member' => \App\Http\Middleware\MemberMiddleware::class,
         'ethics_com' => \App\Http\Middleware\EthicsComMiddleware::class,
+        'internal_audit' => \App\Http\Middleware\IAuditMiddleware::class,
     ];
 }
 

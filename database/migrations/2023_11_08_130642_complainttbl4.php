@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('offense');
             $table->text('narration');
             $table->date('date_of_incident');
+            $table->string('status');
             $table->timestamps();
         });
     }

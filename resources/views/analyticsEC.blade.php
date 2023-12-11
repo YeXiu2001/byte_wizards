@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ethics Com</title>
+<title>Analytics Ethics Com</title>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
@@ -23,7 +23,7 @@
 <div class="wrapper">
 
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-white navbar-light" style="border-bottom: 2px solid blue;">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light" style="border-bottom: 2px solid blue;" >
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
@@ -33,7 +33,7 @@
     </ul>
 
     <!-- Right navbar links -->
-   
+    
   </nav>
   <!-- /.navbar -->
   <!-- Main Sidebar Container -->
@@ -54,9 +54,9 @@
       </div>
 
       <!-- Sidebar Menu -->
-<nav class="mt-2">
+      <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <li class="nav-item menu-open">
+        <li class="nav-item">
             <a href="{{ route('ethicsCom.home') }}" class="nav-link">
                 <i class="nav-icon far fa-calendar-alt"></i>
                 <p>
@@ -64,7 +64,7 @@
                 </p>
             </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item menu-open">
             <a href="{{ route('ethicsCom.analytics') }}" class="nav-link">
                 <i class="nav-icon far fa-image"></i>
                 <p>
@@ -105,16 +105,17 @@
       </div><!-- /.container-fluid -->
     </section>
 
-        <!-- Main content -->
-    <section class="content">
+<!-- Main content -->
+<section class="content">
 
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
       <!-- Default box -->
       <div class="card">
+
         <div class="card-header">
-          <h3 class="card-title">User Feedbacks Table</h3>
+          <h3 class="card-title">User Feedback Analytics</h3>
 
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -125,44 +126,64 @@
             </button> -->
           </div>
         </div>
+
         <div class="card-body">
-        @if($feedbacks->isEmpty())
-        <p>No Userfeedback found.</p>
-    @else
-        <table class="table table-primary table-bordered table-striped" id="myTable">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Rating</th>
-                    <th>Issues</th>
-                    <th>Suggestions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($feedbacks as $uf)
-                    <tr>
-                        <td>{{ $uf->created_at }}</td>
-                        <td>{{ $uf->rating }}</td>
-                        <td>{{ $uf->issues }}</td>
-                        <td>{{ $uf->suggestions }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
+
+        <div class="row"> <!-- charts alignemnt -->
+        <!-- PIE CHART -->
+        <div class="col-sm-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Pie Chart</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas id="pieChart" style="min-height: 400px; height: 400px; max-height: 400px; max-width: 100%;"></canvas>
+                </div>
+            </div>
         </div>
+            <!-- /.PIE CHARTcard -->
+
+        <!-- POLAR AREA CHART -->
+          <div class="col">
+            <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Polar Area Chart</h3>
+                  <div class="card-tools">
+                      <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <canvas id="polarAreaChart" style="min-height: 400px; height: 400px; max-height: 400px; max-width: 100%;"></canvas>
+                </div>
+            </div>
+          </div>
+          <!-- /.POLAR AREA CHART card -->
+                    
+          </div><!-- ./charts alignemnt -->
+
+
         <!-- /.card-body -->
         <div class="card-footer">
           c Byte Wizards 
         </div>
         <!-- /.card-footer-->
-      </div>
-      <!-- /.card -->
-    </div>
+
+      </div> <!-- /.CARD BODY -->
+      
+     
+    </div> <!-- Default BOX end -->
   </div>
 </div>
-</section>
-<!-- /.main content -->
+</div>
+</section><!-- /.main content -->
+
 
  </div><!-- Page Content END -->
 </div> <!-- site wrapper end -->
@@ -176,13 +197,51 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/2.4.5/browser/overlayscrollbars.browser.es6.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Include Google Charts library -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
 $(document).ready(function () {
     $('#myTable').DataTable({
-        responsive: true, // Enable responsive extension
-        order: []
+        responsive: true // Enable responsive extension
     });
 });
 </script>
+<script>
+    //-------------
+    //- PIE CHART -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+    var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
+    var pieData = <?php echo json_encode($pieData); ?>;
+    var pieOptions = {
+        responsive: true,
+    };
+
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    new Chart(pieChartCanvas, {
+        type: 'pie',
+        data: {
+            labels: pieData.labels,
+            datasets: pieData.datasets
+        },
+        options: pieOptions
+    });
+
+     // Polar Area Chart
+   var polarAreaChartCanvas = $('#polarAreaChart').get(0).getContext('2d');
+   var polarAreaData = <?php echo json_encode($polarAreaData); ?>;
+   var polarAreaOptions = {
+      responsive: true,
+   };
+
+   new Chart(polarAreaChartCanvas, {
+      type: 'polarArea',
+      data: polarAreaData,
+      options: polarAreaOptions
+   });
+</script>
+
+
 </body>
 </html>

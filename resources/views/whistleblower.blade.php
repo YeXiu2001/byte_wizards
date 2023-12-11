@@ -9,9 +9,11 @@
 <!-- bs-stepper js -->
 <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- Include SweetAlert2 from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="container py-5">
-<div class="card border-danger">
+<div class="card border-primary">
     <div class="card-body">
     <div class="mb-5 p-1 bg-white">
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -78,9 +80,9 @@
                                 <input type="email" class="form-control" name="email" id="email" placeholder="name@gmail.com">
                             </div>
                         </div>
-                        
+                        <div class="mt-2">
                         <button class="btn btn-primary" onclick="stepper1.previous()">Previous</button>
-                        <button class="btn btn-primary" onclick="validatePersonalInformation()">Next</button>
+                        <button class="btn btn-primary" onclick="validatePersonalInformation()">Next</button></div>
                     </div>
 
                     <div id="test-l-3" role="tabpanel" class="bs-stepper-pane" aria-labelledby="stepper1trigger3">
@@ -117,8 +119,8 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-primary mt-5" onclick="stepper1.previous()">Previous</button>
-                        <button type="submit" class="btn btn-primary mt-5" onclick="validateAndSubmit()" id="w_submit">Submit</button>
+                        <button class="btn btn-primary mt-2" onclick="stepper1.previous()">Previous</button>
+                        <button type="submit" class="btn btn-primary mt-2" onclick="validateAndSubmit()" id="w_submit">Submit</button>
                     </div>
 
                 </form>
@@ -190,8 +192,32 @@ function validateAndSubmit() {
         dateIncident.value.trim() !== '' &&
         furtherInfos.value.trim() !== ''
     ) {
-        // Proceed to submission if all checks pass
-        form.submit();
+         // Show SweetAlert2 confirmation
+         Swal.fire({
+            title: 'Warning!',
+            text: 'Are you sure you want to submit this whistleblower report? This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, submit it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If the user confirms, submit the form
+                form.submit();
+
+                 // Show success Swal after form submission with a delay of 1500 milliseconds (1.5 seconds)
+                 Swal.fire({
+                    title: 'Success!',
+                    text: 'Whistleblower report submitted successfully.',
+                    icon: 'success',
+                    position: 'bottom-end', // Set position to lower right
+                    timer: 2300, // Adjust the duration (in milliseconds)
+                    timerProgressBar: true, // Display a progress bar
+                    showConfirmButton: false, // Hide the "OK" button
+                });
+            }
+        });
     } else {
         // Show validation feedback for the empty fields
         form.classList.add('was-validated');

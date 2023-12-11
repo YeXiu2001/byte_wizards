@@ -12,7 +12,7 @@ class whistleblowerViewController extends Controller
         $user = Auth::user();
 
         // Fetch the user's complaints with pagination
-        $whistleblowerreps = $user->whistleblowerreps()->paginate(1000); // Adjust the pagination size as needed
+        $whistleblowerreps = $user->whistleblowerreps()->orderBy('id', 'desc')->paginate(1000); // Adjust the pagination size as needed
 
         // Pass the complaints data to the view
         return view('whistleblowerView', ['whistleblowerreps' => $whistleblowerreps]);
